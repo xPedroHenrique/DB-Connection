@@ -30,12 +30,12 @@ public class Conta {
         this.transacoes = new ArrayList<>();
     }
 
-    private UUID id;
-    private int numero;
-    private Pessoa titular;
+    private final UUID id;
+    private final int numero;
+    private final Pessoa titular;
     private String senha;
     double saldo;
-    private List<Transacao> transacoes;
+    private final List<Transacao> transacoes;
     private Date data;
 
     public String getSenha() {
@@ -67,7 +67,6 @@ public class Conta {
     public void sacar(double valor) {
         this.saldo -= valor;
         System.out.printf(this.titular.getNome() + " - Saldo após saque: R$%.2f \n", this.saldo);
-
     }
 
     public void setSaldo(double saldo) {
@@ -88,9 +87,11 @@ public class Conta {
 
     public boolean validaSenha(String senha) {
         if (senha != null) {
-            this.senha = BCrypt.hashpw(senha, BCrypt.gensalt());
+            //this.senha = BCrypt.hashpw(senha, BCrypt.gensalt());
+            return BCrypt.checkpw(senha, this.senha);
         }
-        return BCrypt.checkpw(senha, this.senha);
+
+        return false;
     }
 
     private int gerarNumero() {
